@@ -16,3 +16,4 @@ async def url():
 # Swager docs: http://127.0.0.1:8000/docs
 # Redocly docs: http://127.0.0.1:8000/redoc
 
+# GET - Obtain data
