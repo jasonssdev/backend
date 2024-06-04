@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
 app = FastAPI()
@@ -40,15 +40,15 @@ async def user(id: int):
 async def user(id: int):
     return search_user(id)
 
-@app.post("/user/")
+@app.post("/user/", status_code=201)
 async def user(user: User):
     if type(search_user(user.id)) == User:
-        return {"error":"user already created"}
+        raise HTTPException(status_code=404, detail="user already created")
     else:
         users_list.append(user)
         return user
 
-@app.put("/user/")
+@app.put("/user/", status_code=200)
 async def user(user: User):
     found = False
     for index, saved_user in enumerate(users_list):
@@ -56,11 +56,11 @@ async def user(user: User):
             users_list[index] = user
             found = True
     if not found:
-        return {"error":"user not updated"}
+        raise HTTPException(status_code=404, detail="user not updated")
     else:
         return user
     
-@app.delete("/user/{id}")
+@app.delete("/user/{id}", status_code=200)
 async def user(id: int):
     found = False
     for index, saved_user in enumerate(users_list):
@@ -68,7 +68,7 @@ async def user(id: int):
             del users_list[index]
             found = True
     if not found:
-        return {"error":"user not deleted"}
+        raise HTTPException(status_code=404, detail="user not deleted")
     else:
         return user
 
