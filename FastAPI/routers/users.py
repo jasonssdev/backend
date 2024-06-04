@@ -23,7 +23,7 @@ users_list = [User(id=1, name="Jason", surname="Dev", url="https://jasonssdev.co
 
     
 @router.get("/")
-async def usersjson():
+async def users():
     return users_list
 
 #path
